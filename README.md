@@ -1,2 +1,4 @@
 # Derivative-Pricing
 In computational finance and risk management, several numerical methods (e.g., finited differences, fourier methods, and Monte Carlo simulation) are commonly used for the valuation of financial derivatives.
+
+The Black-Scholes formula is probably one of the most widely cited and used models in derivative pricing. Numerous variations and extensions of this formula are used to price many kinds of financial derivatives. However, the model is based on several assumptions. It assumes a specific form of movement for the derivative price, namely a Geometric Brownian Motion (GBM). It also assumes a conditional payment at maturity of the option and economic constraints, such as no-arbitrage. Several other derivate pricing models have similarly impractical model assumptions. Finance practitioners are well aware that these assumptions are violated in practice, and prices from these models are further adjusted using practitioner judgement.
