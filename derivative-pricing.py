@@ -40,3 +40,8 @@ import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from statsmodels.graphics.tsaplots import plot_acf
 
+true_alpha = 0.1
+true_beta = 0.1
+true_sigma = 0.2
+
+risk_free_rate = 0.05
