@@ -55,3 +55,4 @@ def call_option_price(moneyness, time_to_maturity, option_val):
     N_d1 = np.linalg.norm(d1)
     N_d2 = np.linalg.norm(d2)
     return N_d1 - moneyness * np.exp(-risk_free_rate*time_to_maturity) * N_d2
+
