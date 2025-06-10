@@ -42,6 +42,16 @@ from statsmodels.graphics.tsaplots import plot_acf
 
 true_alpha = 0.1
 true_beta = 0.1
-true_sigma = 0.2
+true_sigma0 = 0.2
 
 risk_free_rate = 0.05
+
+def option_vol_from_surface(moneyness, time_to_maturity):
+    return true_sigma0 + true_alpha * time_to_maturity + true_beta * np.square(moneyness - 1)
+
+def call_option_price(moneyness, time_to_maturity, option_val):
+    d1 = (np.log(1/moneyness) + (risk_free_rate+np.square(option_vol))*time_to_maturity)/(option_val*np.sqrt(time_to_maturity))
+    d2 = (np.log(1/moneyness)+(risk_free_rate-np.square(time_to_maturity))*time_to_maturity) / (option_val*np.sqrt(time_to_maturity))
+    N_d1 = np.linalg.norm(d1)
+    N_d2 = np.linalg.norm(d2)
+    return N_d1 - moneyness * np.exp(-risk_free_rate*time_to_maturity) * N_d2
