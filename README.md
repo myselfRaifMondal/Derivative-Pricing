@@ -37,3 +37,5 @@ To make the logic simpler, we define moneyness as M = K / S and look at the pric
 Looking at the equation above, the parameters that feed into the Black-Scholes option pricing model are moneyness, risk-free rate, volatility, and time to maturity.
 
 The parameter that plays the central role in derivative market is volatility, as it is directly related to the movement of the stock prices. With the increase in the volatility, the range of the share price movements becomes much wider than that of a low volatility stock.
+
+In the options market, there isn't a single volatility used to price all the options. This volatility depends on the option moneyness. This behaviour is referred to as volatility smile/skew. We often derive the volatility from the price of the options existing in the market, and this volatility surface and use function, where volatility depends on the option moneyness and time to maturity to generate the option volatility surface.
