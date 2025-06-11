@@ -83,3 +83,16 @@ Y_train, Y_test = Y[0:train_size], Y[train_size:len(Y)]
 num_folds = 10
 seed = 7
 scoring = 'neg_mean_squared_error'
+
+models = []
+models.append(('LR', LinearRegression()))
+models.append(('KNN', KNeighborsRegressor()))
+models.append(('CART', DecisionTreeRegressor()))
+models.append(('SVR', SVR()))
+
+models.append(('MLP', MLPRegressor()))
+
+models.append(('ABR', AdaBoostRegressor()))
+models.append(('GBR', GradientBoostingRegressor()))
+models.append(('RFR', RandomForestRegressor()))
+models.append(('ETR', ExtraTreesRegressor()))
