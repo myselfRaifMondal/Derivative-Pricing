@@ -79,3 +79,7 @@ validation_size = 0.2
 train_size = int(len(X) * (1 - validation_size))
 X_train, X_test = X[0:train_size], X[train_size:len(X)]
 Y_train, Y_test = Y[0:train_size], Y[train_size:len(Y)]
+
+num_folds = 10
+seed = 7
+scoring = 'neg_mean_squared_error'
