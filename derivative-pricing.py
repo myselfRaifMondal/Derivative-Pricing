@@ -50,11 +50,17 @@ def option_vol_from_surface(moneyness, time_to_maturity):
     return true_sigma0 + true_alpha * time_to_maturity + true_beta * np.square(moneyness - 1)
 
 def call_option_price(moneyness, time_to_maturity, option_val):
-    d1 = (np.log(1/moneyness) + (risk_free_rate+np.square(option_val))*time_to_maturity)/(option_val*np.sqrt(time_to_maturity))
-    d2 = (np.log(1/moneyness)+(risk_free_rate-np.square(time_to_maturity))*time_to_maturity) / (option_val*np.sqrt(time_to_maturity))
-    N_d1 = np.linalg.norm(d1)
-    N_d2 = np.linalg.norm(d2)
-    return N_d1 - moneyness * np.exp(-risk_free_rate*time_to_maturity) * N_d2
+    moneyness = np.clip(moneyness, 1e-5, None)  # Prevent log(0) or negative
+    time_to_maturity = np.clip(time_to_maturity, 1e-5, None)  # Prevent division by zero
+
+    d1 = (np.log(1/moneyness) + (risk_free_rate + 0.5 * np.square(option_val)) * time_to_maturity) / (option_val * np.sqrt(time_to_maturity))
+    d2 = d1 - option_val * np.sqrt(time_to_maturity)
+
+    N_d1 = 0.5 * (1 + np.math.erf(d1 / np.sqrt(2)))
+    N_d2 = 0.5 * (1 + np.math.erf(d2 / np.sqrt(2)))
+
+    return N_d1 - moneyness * np.exp(-risk_free_rate * time_to_maturity) * N_d2
+
 
 N = 10000
 
@@ -110,3 +116,9 @@ stds = grid_result.cv_results_['std_test_score']
 params = grid_result.cv_results_['params']
 for mean, std, param in zip(means, stds, params):
     print("%f (%f) with: %r" % (mean, std, param))
+
+model_tuned = MLPRegressor(hidden_layer_sizes=(20, 30, 20))
+model_tuned.fit(X_train, Y_train)
+
+predictions = model_tuned.predict(X_test)
+print(mean_squared_error(Y_test, predictions))
