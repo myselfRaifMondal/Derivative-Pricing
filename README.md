@@ -1,5 +1,9 @@
 # Derivative-Pricing
 
+<a align='center'>
+<img src='plot.png'/>
+</a>
+
 ## Introduction
 In computational finance and risk management, several numerical methods (e.g., finited differences, fourier methods, and Monte Carlo simulation) are commonly used for the valuation of financial derivatives.
 
