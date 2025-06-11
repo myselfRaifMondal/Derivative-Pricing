@@ -73,6 +73,10 @@ Y = Ps
 X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
 dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
 
+valid_indices = ~np.isnan(Ps) & np.all(np.isfinite(X), axis=1)
+X = X[valid_indices]
+Y = Ps[valid_indices]
+
 bestfeatures = SelectKBest(score_func=f_regression, k='all')
 fit = bestfeatures.fit(X, Y)
 dfscores = pd.DataFrame(fit.scores_)
