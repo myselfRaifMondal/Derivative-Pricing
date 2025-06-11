@@ -67,6 +67,15 @@ Y = Ps
 X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
 dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
 
-pyplot.figure(figsize=(15, 15))
-scatter_matrix(dataset, figsize=(12, 12))
-pyplot.show()
+bestfeatures = SelectKBest(score_func=f_regression, k='all')
+fit = bestfeatures.fit(X, Y)
+dfscores = pd.DataFrame(fit.scores_)
+dfcolumns = pd.DataFrame(['Moneyness', 'Time', 'Vol'])
+featureScores = pd.concat([dfcolumns, dfscores], axis=1)
+featureScores.columns = ['Specs', 'Score']
+featureScores.nlargest(10, 'Score').select_index('Specs')
+
+validation_size = 0.2
+train_size = int(len(X) * (1 - validation_size))
+X_train, X_test = X[0:train_size], X[train_size:len(X)]
+Y_train, Y_test = Y[0:train_size], Y[train_size:len(Y)]
