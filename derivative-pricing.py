@@ -34,7 +34,7 @@ import statsmodels.api as sm
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot 
-import pandas_datareader.web as web
+from pandas_datareader import data as web
 from pandas.plotting import scatter_matrix
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
@@ -50,7 +50,7 @@ def option_vol_from_surface(moneyness, time_to_maturity):
     return true_sigma0 + true_alpha * time_to_maturity + true_beta * np.square(moneyness - 1)
 
 def call_option_price(moneyness, time_to_maturity, option_val):
-    d1 = (np.log(1/moneyness) + (risk_free_rate+np.square(option_vol))*time_to_maturity)/(option_val*np.sqrt(time_to_maturity))
+    d1 = (np.log(1/moneyness) + (risk_free_rate+np.square(option_val))*time_to_maturity)/(option_val*np.sqrt(time_to_maturity))
     d2 = (np.log(1/moneyness)+(risk_free_rate-np.square(time_to_maturity))*time_to_maturity) / (option_val*np.sqrt(time_to_maturity))
     N_d1 = np.linalg.norm(d1)
     N_d2 = np.linalg.norm(d2)
@@ -67,4 +67,4 @@ Y = Ps
 X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
 dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
 
-dataset.head()
+print(dataset.head())
