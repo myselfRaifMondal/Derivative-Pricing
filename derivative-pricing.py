@@ -67,4 +67,6 @@ Y = Ps
 X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
 dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
 
-print(dataset.head())
+pyplot.figure(figsize=(15, 15))
+scatter_matrix(dataset, figsize=(12, 12))
+pyplot.show()
