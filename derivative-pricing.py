@@ -73,7 +73,7 @@ dfscores = pd.DataFrame(fit.scores_)
 dfcolumns = pd.DataFrame(['Moneyness', 'Time', 'Vol'])
 featureScores = pd.concat([dfcolumns, dfscores], axis=1)
 featureScores.columns = ['Specs', 'Score']
-featureScores.nlargest(10, 'Score').select_index('Specs')
+featureScores.nlargest(10, 'Score').set_index('Specs')
 
 validation_size = 0.2
 train_size = int(len(X) * (1 - validation_size))
