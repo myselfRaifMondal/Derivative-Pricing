@@ -96,3 +96,17 @@ models.append(('ABR', AdaBoostRegressor()))
 models.append(('GBR', GradientBoostingRegressor()))
 models.append(('RFR', RandomForestRegressor()))
 models.append(('ETR', ExtraTreesRegressor()))
+
+param_grid = {
+    'hidden_layer_sizes': [(20,), (50,), (20, 20), (20, 20, 20)]
+}
+model = MLPRegressor()
+kfold = KFold(n_splits=num_folds, random_state=seed)
+grid = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring)
+grid_result = grid.fit(X_train, Y_train)
+print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
+means = grid_result.cv_results_['mean_test_score']
+stds = grid_result.cv_results_['std_test_score']
+params = grid_result.cv_results_['params']
+for mean, std, param in zip(means, stds, params):
+    print("%f (%f) with: %r" % (mean, std, param))
