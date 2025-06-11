@@ -20,3 +20,20 @@ In the supervised regression framework we used for this case study, the predicte
 The variables selected to estimate the market price of the option are stock price, strike price, time to expiration, volatility, interest rate and dividend yield. The predicted variable for this case study was generated using random inputs and feeding them into the well-known Black-Scholes model.
 
 The price of a call option per the Black-Scholes option pricing model is defined in given equation.
+
+<p>
+<img src='call option.png'/>
+</p>
+
+where: 
+C = Call option price
+S = Current price of the underlying asset
+K = Strike price of the option
+r = Risk-free interest rate
+T = Time to expiration
+
+To make the logic simpler, we define moneyness as M = K / S and look at the price in terms of per unit of current stock price.
+
+Looking at the equation above, the parameters that feed into the Black-Scholes option pricing model are moneyness, risk-free rate, volatility, and time to maturity.
+
+The parameter that plays the central role in derivative market is volatility, as it is directly related to the movement of the stock prices. With the increase in the volatility, the range of the share price movements becomes much wider than that of a low volatility stock.
