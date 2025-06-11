@@ -98,7 +98,7 @@ models.append(('RFR', RandomForestRegressor()))
 models.append(('ETR', ExtraTreesRegressor()))
 
 param_grid = {
-    'hidden_layer_sizes': [(20,), (50,), (20, 20), (20, 20, 20)]
+    'hidden_layer_sizes': [(20,), (50,), (20, 20), (20, 30, 20)]
 }
 model = MLPRegressor()
 kfold = KFold(n_splits=num_folds, random_state=seed, shuffle=True)
