@@ -21,7 +21,7 @@ The variables selected to estimate the market price of the option are stock pric
 
 The price of a call option per the Black-Scholes option pricing model is defined in given equation.
 
-<p>
+<p align="center">
 <img src='call option.png'/>
 </p>
 
