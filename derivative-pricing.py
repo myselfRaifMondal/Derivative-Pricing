@@ -56,3 +56,13 @@ def call_option_price(moneyness, time_to_maturity, option_val):
     N_d2 = np.linalg.norm(d2)
     return N_d1 - moneyness * np.exp(-risk_free_rate*time_to_maturity) * N_d2
 
+N = 10000
+
+Ks = 1+0.25*np.random.randn(N)
+Ts = np.random.random(N)
+Sigmas = np.array([option_vol_from_surface(k, t) for k, t in zip(Ks, Ts)])
+Ps = np.array([call_option_price(k, t, sig) for k, t, sig in zip(Ks, Ts, Sigmas)])
+
+Y = Ps
+X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
+dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
