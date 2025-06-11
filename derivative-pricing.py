@@ -101,7 +101,7 @@ param_grid = {
     'hidden_layer_sizes': [(20,), (50,), (20, 20), (20, 20, 20)]
 }
 model = MLPRegressor()
-kfold = KFold(n_splits=num_folds, random_state=seed)
+kfold = KFold(n_splits=num_folds, random_state=seed, shuffle=True)
 grid = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring)
 grid_result = grid.fit(X_train, Y_train)
 print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
