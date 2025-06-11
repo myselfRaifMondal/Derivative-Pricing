@@ -66,3 +66,5 @@ Ps = np.array([call_option_price(k, t, sig) for k, t, sig in zip(Ks, Ts, Sigmas)
 Y = Ps
 X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
 dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
+
+dataset.head()
