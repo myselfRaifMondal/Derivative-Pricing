@@ -12,3 +12,11 @@ Machine learning can potentially be used to tackle these drawbacks related to im
 Additionally, market data is plentiful, so it is possible to train a machine learning algorithm to learn the function that is collectively generation derivative prices in the market. Machine learning models can caputre subtle nonlinearities in the data these are no obtainable through other statistical approaches.
 
 In this case study, we loot at derivative pricing from a machine learning standpoint and use a supervised regression-based model to price an option from simulated data. The main idea here is to come up with a machine learning framework for derivative pricing. Achieving a machine learning model with high accuracy would mean that we can leverage the efficient numerical calculation of machine learning for derivative pricing with fewer underlying model assumptions.
+
+## Problem Definition
+
+In the supervised regression framework we used for this case study, the predicted variable is the price of the option, and the predictor variables are the market data used as inputs to the Black-Scholes option pricing model.
+
+The variables selected to estimate the market price of the option are stock price, strike price, time to expiration, volatility, interest rate and dividend yield. The predicted variable for this case study was generated using random inputs and feeding them into the well-known Black-Scholes model.
+
+The price of a call option per the Black-Scholes option pricing model is defined in given equation.
