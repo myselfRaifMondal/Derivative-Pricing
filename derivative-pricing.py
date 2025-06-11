@@ -17,7 +17,7 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import mean_squared_error
-from sklearn.feature_extraction import SelectKBest
+from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import f_regression, chi2
 
 # Function and modlues for deep learning models
