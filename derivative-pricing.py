@@ -62,71 +62,76 @@ def call_option_price(moneyness, time_to_maturity, option_val):
     return N_d1 - moneyness * np.exp(-risk_free_rate * time_to_maturity) * N_d2
 
 
-N = 10000
+def main():
+    N = 10000
 
-Ks = 1+0.25*np.random.randn(N)
-Ts = np.random.random(N)
-Sigmas = np.array([option_vol_from_surface(k, t) for k, t in zip(Ks, Ts)])
-Ps = np.array([call_option_price(k, t, sig) for k, t, sig in zip(Ks, Ts, Sigmas)])
+    Ks = 1+0.25*np.random.randn(N)
+    Ts = np.random.random(N)
+    Sigmas = np.array([option_vol_from_surface(k, t) for k, t in zip(Ks, Ts)])
+    Ps = np.array([call_option_price(k, t, sig) for k, t, sig in zip(Ks, Ts, Sigmas)])
 
-Y = Ps
-X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
-dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
+    Y = Ps
+    X = np.concatenate((Ks.reshape(-1, 1), Ts.reshape(-1, 1), Sigmas.reshape(-1, 1)), axis=1)
+    dataset = pd.DataFrame(np.concatenate([Y.reshape(-1, 1), X], axis=1), columns=['Price', 'Moneyness', 'Time', 'Vol'])
 
-pyplot.figure(figsize=(15, 15))
-scatter_matrix(dataset, figsize=(12, 12))
-pyplot.show()
+    pyplot.figure(figsize=(15, 15))
+    scatter_matrix(dataset, figsize=(12, 12))
+    pyplot.show()
 
-valid_indices = ~np.isnan(Ps) & np.all(np.isfinite(X), axis=1)
-X = X[valid_indices]
-Y = Ps[valid_indices]
+    valid_indices = ~np.isnan(Ps) & np.all(np.isfinite(X), axis=1)
+    X = X[valid_indices]
+    Y = Ps[valid_indices]
 
-bestfeatures = SelectKBest(score_func=f_regression, k='all')
-fit = bestfeatures.fit(X, Y)
-dfscores = pd.DataFrame(fit.scores_)
-dfcolumns = pd.DataFrame(['Moneyness', 'Time', 'Vol'])
-featureScores = pd.concat([dfcolumns, dfscores], axis=1)
-featureScores.columns = ['Specs', 'Score']
-featureScores.nlargest(10, 'Score').set_index('Specs')
+    bestfeatures = SelectKBest(score_func=f_regression, k='all')
+    fit = bestfeatures.fit(X, Y)
+    dfscores = pd.DataFrame(fit.scores_)
+    dfcolumns = pd.DataFrame(['Moneyness', 'Time', 'Vol'])
+    featureScores = pd.concat([dfcolumns, dfscores], axis=1)
+    featureScores.columns = ['Specs', 'Score']
+    featureScores.nlargest(10, 'Score').set_index('Specs')
 
-validation_size = 0.2
-train_size = int(len(X) * (1 - validation_size))
-X_train, X_test = X[0:train_size], X[train_size:len(X)]
-Y_train, Y_test = Y[0:train_size], Y[train_size:len(X)]
+    validation_size = 0.2
+    train_size = int(len(X) * (1 - validation_size))
+    X_train, X_test = X[0:train_size], X[train_size:len(X)]
+    Y_train, Y_test = Y[0:train_size], Y[train_size:len(X)]
 
-num_folds = 10
-seed = 7
-scoring = 'neg_mean_squared_error'
+    num_folds = 10
+    seed = 7
+    scoring = 'neg_mean_squared_error'
 
-models = []
-models.append(('LR', LinearRegression()))
-models.append(('KNN', KNeighborsRegressor()))
-models.append(('CART', DecisionTreeRegressor()))
-models.append(('SVR', SVR()))
+    models = []
+    models.append(('LR', LinearRegression()))
+    models.append(('KNN', KNeighborsRegressor()))
+    models.append(('CART', DecisionTreeRegressor()))
+    models.append(('SVR', SVR()))
 
-models.append(('MLP', MLPRegressor()))
+    models.append(('MLP', MLPRegressor()))
 
-models.append(('ABR', AdaBoostRegressor()))
-models.append(('GBR', GradientBoostingRegressor()))
-models.append(('RFR', RandomForestRegressor()))
-models.append(('ETR', ExtraTreesRegressor()))
+    models.append(('ABR', AdaBoostRegressor()))
+    models.append(('GBR', GradientBoostingRegressor()))
+    models.append(('RFR', RandomForestRegressor()))
+    models.append(('ETR', ExtraTreesRegressor()))
 
-param_grid = {
-    'hidden_layer_sizes': [(20,), (50,), (20, 20), (20, 30, 20)]
-}
-model = MLPRegressor()
-kfold = KFold(n_splits=num_folds, random_state=seed, shuffle=True)
-grid = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring)
-grid_result = grid.fit(X_train, Y_train)
-print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
-means = grid_result.cv_results_['mean_test_score']
-stds = grid_result.cv_results_['std_test_score']
-params = grid_result.cv_results_['params']
-for mean, std, param in zip(means, stds, params):
-    print("%f (%f) with: %r" % (mean, std, param))
+    param_grid = {
+        'hidden_layer_sizes': [(20,), (50,), (20, 20), (20, 30, 20)]
+    }
+    model = MLPRegressor()
+    kfold = KFold(n_splits=num_folds, random_state=seed, shuffle=True)
+    grid = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring)
+    grid_result = grid.fit(X_train, Y_train)
+    print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
+    means = grid_result.cv_results_['mean_test_score']
+    stds = grid_result.cv_results_['std_test_score']
+    params = grid_result.cv_results_['params']
+    for mean, std, param in zip(means, stds, params):
+        print("%f (%f) with: %r" % (mean, std, param))
 
-model_tuned = MLPRegressor(hidden_layer_sizes=(20, 30, 20))
-model_tuned.fit(X_train, Y_train)
+    model_tuned = MLPRegressor(hidden_layer_sizes=(20, 30, 20))
+    model_tuned.fit(X_train, Y_train)
 
-predictions = model_tuned.predict(X_test)
-print(mean_squared_error(Y_test, predictions))
+    predictions = model_tuned.predict(X_test)
+    print(mean_squared_error(Y_test, predictions))
+
+
+if __name__ == "__main__":
+    main()
