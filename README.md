@@ -44,6 +44,23 @@ The parameter that plays the central role in derivative market is volatility, as
 
 In the options market, there isn't a single volatility used to price all the options. This volatility depends on the option moneyness. This behaviour is referred to as volatility smile/skew. We often derive the volatility from the price of the options existing in the market, and this volatility surface and use function, where volatility depends on the option moneyness and time to maturity to generate the option volatility surface.
 
+## Usage
+
+Requires Python 3.9-3.12 (see the note in `requirements.txt`).
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python derivative-pricing.py
+```
+
+The script simulates Black-Scholes call option prices, shows a scatter-matrix
+plot of the generated dataset, grid-searches an `MLPRegressor`, and prints the
+mean squared error of the tuned model on the hold-out set. Importing the module
+(`import importlib; importlib.import_module("derivative-pricing")`) runs nothing
+and renders no plots -- the entry flow lives in `main()`.
+
 ## License
 
 This project is licensed under the terms of the [MIT License](LICENSE).
